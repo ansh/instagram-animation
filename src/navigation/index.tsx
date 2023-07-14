@@ -20,8 +20,7 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function RootStack() {
-  const { animatedRef, pageX, pageY, active, headerHeight } =
-  useAnimatedValues();
+  const { animatedRef, pageX, pageY, active, headerHeight } = useAnimatedValues();
 
   return (
     <SafeAreaProvider>
@@ -40,12 +39,18 @@ export default function RootStack() {
                   gestureEnabled: true,
                 }}
               >
-                <Stack.Screen
-                  name="Home"
-                  component={(props: { route: RouteProp<RootStackParamList, "Home">; navigation: any; }) => (
-                    <Home animatedRef={animatedRef} pageX={pageX} pageY={pageY} active={active} headerHeight={headerHeight} {...props} />
+                <Stack.Screen name="Home">
+                  {(props: { route: RouteProp<RootStackParamList, "Home">; navigation: any }) => (
+                    <Home
+                      animatedRef={animatedRef}
+                      pageX={pageX}
+                      pageY={pageY}
+                      active={active}
+                      headerHeight={headerHeight}
+                      {...props}
+                    />
                   )}
-                />
+                </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
             <DetailScreen
@@ -65,10 +70,10 @@ export default function RootStack() {
 
 const styles = StyleSheet.create({
   backButton: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   backButtonText: {
     color: "#007AFF",
-    marginLeft: 4
-  }
+    marginLeft: 4,
+  },
 });

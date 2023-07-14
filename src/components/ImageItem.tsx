@@ -39,6 +39,8 @@ export const ImageItem = ({ active, url, animate }) => {
   return (
     <AnimatedFastImage
       style={animatedImageStyles}
+      recyclingKey={url}
+      key={url}
       source={{
         uri: url,
       }}

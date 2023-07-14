@@ -26,7 +26,7 @@ export const ImageDetailsList = ({ active }) => {
       return (
         <Animated.View>
           <ImageHeader />
-          <ImageDetailListItem animate url={item.image.url} active={active} />
+          <ImageDetailListItem animate url={item.image} active={active} />
           <ImageDescriptions />
         </Animated.View>
       );
@@ -36,7 +36,7 @@ export const ImageDetailsList = ({ active }) => {
 
   return (
     <AnimatedFlashList
-      style={animatedContainerStyles}
+      // style={animatedContainerStyles}
       data={memoList}
       renderItem={renderItem}
       estimatedItemSize={100}

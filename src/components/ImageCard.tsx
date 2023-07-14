@@ -41,7 +41,7 @@ const ImageCard = ({ image, animatedRef, pageX, pageY, active }) => {
             height: CARD_LIST_SIZE,
           }}
         >
-          <ImageItem active={active} url={image.url} animate={false} />
+          <ImageItem key={image} active={active} url={image} animate={false} />
         </Animated.View>
       </AnimatedPressable>
   );
