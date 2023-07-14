@@ -1,37 +1,65 @@
 import { Feather } from "@expo/vector-icons";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Text, View, StyleSheet } from "react-native";
+import { PortalProvider } from "@gorhom/portal";
 
 import Overview from "../screens/overview";
 import Details from "../screens/details";
+import useAnimatedValues from "../hooks/use-animated-values";
+import Home from "../screens/overview";
+import DetailScreen from "../screens/details";
+import { DetailScreenProvider } from "../context/detail-screen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export type RootStackParamList = {
-  Overview: undefined;
+  Home: undefined;
   Details: { name: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function RootStack() {
+  const { animatedRef, pageX, pageY, active, headerHeight } =
+  useAnimatedValues();
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Overview">
-        <Stack.Screen name="Overview" component={Overview} />
-        <Stack.Screen
-          name="Details"
-          component={Details}
-          options={({ navigation }) => ({
-            headerLeft: () => (
-              <View style={styles.backButton}>
-                <Feather name="chevron-left" size={16} color="#007AFF" />
-                <Text style={styles.backButtonText} onPress={navigation.goBack}>Back</Text>
-              </View>
-            )
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <PortalProvider>
+        <View
+          style={{
+            flex: 1,
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.3)",
+          }}
+        >
+          <DetailScreenProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  gestureEnabled: true,
+                }}
+              >
+                <Stack.Screen
+                  name="Home"
+                  component={(props: { route: RouteProp<RootStackParamList, "Home">; navigation: any; }) => (
+                    <Home animatedRef={animatedRef} pageX={pageX} pageY={pageY} active={active} headerHeight={headerHeight} {...props} />
+                  )}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+            <DetailScreen
+              {...{
+                active,
+                pageX,
+                pageY,
+                headerHeight,
+              }}
+            />
+          </DetailScreenProvider>
+        </View>
+      </PortalProvider>
+    </SafeAreaProvider>
   );
 }
 
